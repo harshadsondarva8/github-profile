@@ -20,19 +20,20 @@ type FontWeight =
 
 // Define properties for the TextWithIcon component
 type propsType = PropsWithChildren<{
-  iconSource?: null | undefined;
+  imageSource?: null | undefined;
   text?: string | undefined;
   fontSize?: number;
   lineHeight?: number;
   color?: string;
   fontWeight?: FontWeight;
   imageSize?: [number, number | undefined];
+  icon?: any;
 }>;
 
 /**
  * JSX Component for rendering text with an optional icon.
  * @param {object} props - Properties for configuring the TextWithIcon component.
- * @param {null | undefined} [props.iconSource=null] - Source for the optional icon image.
+ * @param {null | undefined} [props.imageSource=null] - Source for the optional image.
  * @param {string | undefined} [props.text] - Text content to be displayed.
  * @param {number} [props.fontSize] - Font size for the text.
  * @param {number} [props.lineHeight] - Line height for the text.
@@ -42,7 +43,7 @@ type propsType = PropsWithChildren<{
  * @returns {JSX.Element} - TextWithIcon component.
  * @example
  * <TextWithIcon
- *   iconSource={require('./icon.png')}
+ *   imageSource={require('./icon.png')}
  *   text="Hello, World!"
  *   fontSize={16}
  *   customColor="#333333"
@@ -51,12 +52,13 @@ type propsType = PropsWithChildren<{
  * />
  */
 function TextWithIcon({
-  iconSource = null,
+  imageSource = null,
   text,
   fontSize,
   lineHeight,
   color,
   fontWeight,
+  icon,
   imageSize = [16, 16],
 }: propsType): React.JSX.Element {
   const imageWidth = imageSize[0];
@@ -69,10 +71,11 @@ function TextWithIcon({
       flexDirection="row"
       alignItems="center"
       style={{columnGap: 10}}>
-      {iconSource && (
+      {icon}
+      {imageSource && (
         <Image
           testID="icon"
-          source={iconSource}
+          source={imageSource}
           style={{width: imageWidth, height: imageHeight}}
           resizeMode="contain"
         />

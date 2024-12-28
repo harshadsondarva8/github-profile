@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import ScrollableContainer from '../ScrollableContainer';
-import Container from '../Container';
-import Skeleton from '../Skeleton';
+import ScrollableContainer from '@/components/ScrollableContainer';
+import Container from '@/components/Container';
+import Skeleton from '@/components/Skeleton';
 
 function ScreensSkeleton(): React.JSX.Element {
   return (

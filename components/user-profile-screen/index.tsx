@@ -2,8 +2,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useLocalSearchParams} from 'expo-router';
 import AppContainer from '../AppContainer';
-import UserDetailsSkeleton from '../UserDetails/skeleton';
-import UserDetails from '../UserDetails';
+import UserDetailsSkeleton from './UserDetails/skeleton';
+import UserDetails from './UserDetails';
 import {useSelector} from 'react-redux';
 import {Store} from '@/redux/store';
 import Requests from '@/requests';
