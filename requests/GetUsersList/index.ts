@@ -1,21 +1,21 @@
-import Catch404 from "@/services/Catch404";
-import Comm from "@/services/Comm";
-import Uri from "@/services/Uri";
+import Catch404 from '@/services/Catch404';
+import Comm from '@/services/Comm';
+import Uri from '@/services/Uri';
 
 /**
- * Asynchronous function to fetch the list of users following the specified user.
- * @param {string} login - The login username of the user whose followers are to be fetched.
- * @returns {Promise<object>} - A promise that resolves to the list of followers or rejects with an error.
+ * Asynchronous function to fetch user data based on the provided login.
+ * @param {string} login - The login username of the user to fetch.
+ * @returns {Promise<object>} - A promise that resolves to the user data or rejects with an error.
  * @throws {object} - An object with `code` and `message` properties representing the error details.
  * @example
  * try {
- *   const followingList = await GetFollowing('exampleUser');
- *   console.log(followingList);
+ *   const userData = await GetUser('exampleUser');
+ *   console.log(userData);
  * } catch (error) {
  *   console.error(`Error ${error.code}: ${error.message}`);
  * }
  */
-const GetFollowing = async (login: string) => {
+const GetUsersList = async (query: string) => {
   let result;
   let error: {code: number; message: string} = {
     code: 0,
@@ -24,7 +24,7 @@ const GetFollowing = async (login: string) => {
 
   // Perform an asynchronous HTTP GET request using the Comm service
   await Comm.request({
-    url: Uri.following({login}), // Generate the following-specific URL using the Uri service
+    url: Uri.searchList({query}),
     method: 'get',
   })
     .then(res => {
@@ -43,8 +43,8 @@ const GetFollowing = async (login: string) => {
     return Promise.reject(error);
   }
 
-  // If successful, resolve the promise with the fetched list of following users
+  // If successful, resolve the promise with the fetched user data
   return Promise.resolve(result);
 };
 
-export default GetFollowing;
+export default GetUsersList;

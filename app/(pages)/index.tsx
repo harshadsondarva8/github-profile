@@ -1,10 +1,13 @@
 import React, {useEffect} from 'react';
-import {BackHandler, Alert, Image, useColorScheme} from 'react-native';
+import {BackHandler, Alert, Image, TouchableOpacity} from 'react-native';
 import SearchScreen from '@/components/search-screen';
 import {ThemedText} from '@/components/ThemedText';
 import {useNavigation} from 'expo-router';
-import {StatusBar} from 'expo-status-bar';
 import {ThemedView} from '@/components/ThemedView';
+import {Feather} from '@expo/vector-icons';
+import {RootState, Store, useAppSelector} from '@/redux/store';
+import {changeTheme} from '@/redux/reducers/DeviceConfig';
+import {useThemeColor} from '@/hooks/useThemeColor';
 
 /**
  * Search component for displaying and searching users.
@@ -12,7 +15,9 @@ import {ThemedView} from '@/components/ThemedView';
  */
 
 const Screen: React.FC = () => {
-  const colorScheme = useColorScheme();
+  const colorScheme = useAppSelector(
+    (state: RootState) => state?.DeviceConfig?.themeMode,
+  );
   const navigation = useNavigation();
 
   // Set navigation options for the screen
@@ -22,11 +27,7 @@ const Screen: React.FC = () => {
       title: 'Search Users',
       headerBackTitle: 'Go back',
       headerTitle: () => (
-        <ThemedView
-          transparent
-          alignItems="center"
-          justifyContent="center"
-          style={{marginLeft: -32}}>
+        <ThemedView transparent alignItems="center" justifyContent="center">
           <ThemedText fontSize={20} lineHeight={30} fontWeight="500">
             Search Users
           </ThemedText>
@@ -36,14 +37,40 @@ const Screen: React.FC = () => {
         <Image
           source={
             colorScheme === 'dark'
-              ? require('../assets/images/logo-light.png')
-              : require('../assets/images/logo.png')
+              ? require('../../assets/images/logo-light.png')
+              : require('../../assets/images/logo.png')
           }
-          style={{width: 32, height: 32, marginLeft: 15}}
+          style={{width: 32, height: 32, marginLeft: 5}}
           resizeMode="contain"
         />
       ),
-      headerRight: () => null, // No header right component
+      headerRight: () => (
+        <TouchableOpacity
+          testID="action-btn-touchable"
+          activeOpacity={0.5}
+          onPress={handelTheme}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: 32,
+            height: 32,
+            marginLeft: 5,
+          }}>
+          {colorScheme === 'dark' ? (
+            <Feather
+              name="sun"
+              size={24}
+              color={useThemeColor({light: '', dark: ''}, 'text')}
+            />
+          ) : (
+            <Feather
+              name="moon"
+              size={24}
+              color={useThemeColor({light: '', dark: ''}, 'text')}
+            />
+          )}
+        </TouchableOpacity>
+      ), // No header right component
       headerShadowVisible: false, // Disable header shadow
     });
 
@@ -67,13 +94,12 @@ const Screen: React.FC = () => {
     return () => backHandler.remove();
   }, [navigation, colorScheme]);
 
+  const handelTheme = () => {
+    Store.dispatch(changeTheme(colorScheme === 'dark' ? 'light' : 'dark'));
+  };
+
   // Render the Screens component with the navigation prop
-  return (
-    <React.Fragment>
-      <SearchScreen />;
-      <StatusBar style="auto" />
-    </React.Fragment>
-  );
+  return <SearchScreen />;
 };
 
 export default Screen;

@@ -1,17 +1,19 @@
 import React, {PropsWithChildren} from 'react';
-import {Image, StyleSheet} from 'react-native';
+import {Image, Linking, StyleSheet} from 'react-native';
 
-import Avatar from '../Avatar';
-import ScrollableContainer from '../ScrollableContainer';
-import {ThemedView} from '../ThemedView';
-import {ThemedText} from '../ThemedText';
-import TextWithIcon from '../TextWithIcon';
-import Container from '../Container';
-import ActionButton from '../ActionButton';
+import Avatar from '@/components/Avatar';
+import ScrollableContainer from '@/components/ScrollableContainer';
+import {ThemedView} from '@/components/ThemedView';
+import {ThemedText} from '@/components/ThemedText';
+import TextWithIcon from '@/components/TextWithIcon';
+import Container from '@/components/Container';
+import ActionButton from '@/components/ActionButton';
 
 import FormatNumber from '@/utils/FormatNumber';
 import {UserDetails as UserDetailTypes} from '@/redux/types/UserDetails.types';
 import {useRouter} from 'expo-router';
+import {Octicons} from '@expo/vector-icons';
+import {useThemeColor} from '@/hooks/useThemeColor';
 
 type propsType = PropsWithChildren<{
   data?: UserDetailTypes;
@@ -51,7 +53,7 @@ function UserDetails({
   const viewFollowersFollowing = (type: string) => {
     const userparams: any = {type: type, login: data?.login};
     router.push({
-      pathname: '/followers-following' ,
+      pathname: '/followers-following',
       params: userparams, // Pass the userId as a parameter
     });
   };
@@ -93,34 +95,61 @@ function UserDetails({
           )}
           {data?.email && (
             <TextWithIcon
-              iconSource={require('../../assets/images/icon-email.png')}
+              imageSource={require('../../../assets/images/icon-email.png')}
               imageSize={[16, 16]}
               text={data?.email}
               fontSize={15}
               lineHeight={21}
-              color="rgb(31,35,40)"
             />
           )}
           {data?.location && (
             <TextWithIcon
-              iconSource={require('../../assets/images/icon-location.png')}
+              imageSource={require('../../../assets/images/icon-location.png')}
               imageSize={[16, 16]}
               text={data?.location}
               fontSize={15}
               lineHeight={21}
-              color="rgb(31,35,40)"
             />
           )}
           {data?.company && (
             <TextWithIcon
-              iconSource={require('../../assets/images/icon-company.png')}
+              imageSource={require('../../../assets/images/icon-company.png')}
               imageSize={[16, 16]}
               text={data?.company}
               fontSize={15}
               lineHeight={21}
-              color="rgb(31,35,40)"
             />
           )}
+
+          <ThemedView
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              columnGap: 10,
+              marginLeft: 2,
+            }}>
+            <Octicons
+              name="repo"
+              size={16}
+              color={useThemeColor({light: '', dark: ''}, 'text')}
+              style={{opacity: 0.6, marginRight: 1}}
+            />
+            <ActionButton
+              title={FormatNumber(Number(data?.public_repos ?? 0))}
+              subTitle="Repositories"
+              onPress={async () => {
+                const url = data?.html_url ?? '';
+                try {
+                  const canOpen = await Linking.canOpenURL(url);
+                  if (canOpen) {
+                    Linking.openURL(url);
+                  }
+                } catch (error) {
+                  console.log('the error is ', error);
+                }
+              }}
+            />
+          </ThemedView>
 
           {/* Followers and following counts with icons */}
           <ThemedView
@@ -130,7 +159,7 @@ function UserDetails({
               columnGap: 10,
             }}>
             <Image
-              source={require('../../assets/images/icon-users.png')}
+              source={require('../../../assets/images/icon-users.png')}
               style={{width: 16, height: 16}}
               resizeMode="contain"
             />

@@ -52,12 +52,7 @@ const Screen: React.FC = () => {
   }, [navigation]);
 
   // Render the Screens component with the navigation prop
-  return (
-    <React.Fragment>
-      <FollowersFollowingScreen />;
-      <StatusBar style="auto" />
-    </React.Fragment>
-  );
+  return <FollowersFollowingScreen />;
 };
 
 export default Screen;

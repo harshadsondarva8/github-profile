@@ -49,12 +49,7 @@ const Screen: React.FC = () => {
   }, [navigation]);
 
   // Render the Screens component with navigation and params
-  return (
-    <React.Fragment>
-      <UserProfileScreen />;
-      <StatusBar style="auto" />
-    </React.Fragment>
-  );
+  return <UserProfileScreen />;
 };
 
 export default Screen;

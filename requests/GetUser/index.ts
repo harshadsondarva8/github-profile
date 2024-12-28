@@ -29,7 +29,6 @@ const GetUser = async (login: string) => {
   })
     .then(res => {
       result = res.data;
-      // console.log(res)
     })
     .catch(
       // Catch 404 errors using the Catch404 service

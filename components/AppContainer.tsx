@@ -4,7 +4,6 @@ import {
   Platform,
   SafeAreaView,
   ScrollView,
-  StatusBar,
 } from 'react-native';
 
 interface AppContainerProps {
@@ -49,13 +48,6 @@ const AppContainer: React.FC<AppContainerProps> = props => {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={keyboardVerticalOffset}
         {...props}>
-        {/* StatusBar for controlling status bar appearance */}
-        <StatusBar
-          animated={false}
-          backgroundColor={'#FFFFFF'}
-          hidden={false}
-        />
-
         {scroll ? (
           // ScrollView provides a scrollable container for content
           <ScrollView
